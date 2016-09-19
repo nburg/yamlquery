@@ -1,9 +1,16 @@
 class YamlQuery
-  def initialize(object, query)
+  def initialize(object, options)
     @object   = object
-    @keys     = query[:keys]
-    @operator = query[:operator].to_s
-    @arg      = query[:arg].to_s
+    @options = options
+    tree = parse(@options)
+    yqt = YamlQuery::Transform.new
+    parsed_query = yqt.apply(tree)
+    if options[:debug]
+      pp parsed_query
+    end
+    @keys     = parsed_query[:keys]
+    @operator = parsed_query[:operator].to_s
+    @arg      = parsed_query[:arg].to_s
   end
 
   def object_search(object = @object, index = 0)
@@ -25,6 +32,13 @@ class YamlQuery
   end
 
   private
+
+  def parse(options)
+    yqp = YamlQuery::Parser.new(options[:delimiter])
+    yqp.parse(options[:query])
+  rescue Parslet::ParseFailed => failure
+    puts failure.cause.ascii_tree
+  end
 
   def compare(value)
     case @operator
@@ -93,3 +107,4 @@ end
 require 'yamlquery/parser'
 require 'yamlquery/settings'
 require 'yamlquery/output'
+require 'pp'

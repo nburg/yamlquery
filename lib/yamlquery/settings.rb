@@ -44,7 +44,7 @@ class YamlQuery::Settings
         @options[:oneline?] = true
       end
 
-      opts.on('-d', '--debug', 'Matches will be displayed in oneline mode') do
+      opts.on('--debug', 'Prints some extra output helpful for debugging') do
         @options[:debug] = true
       end
     end.parse!

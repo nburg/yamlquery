@@ -2,29 +2,14 @@
 
 require 'psych'
 require 'yamlquery'
-require 'pp'
-
-def parse(options)
-  hq = YamlQuery::Parser.new(options[:delimiter])
-  hq.parse(options[:query])
-rescue Parslet::ParseFailed => failure
-  puts failure.cause.ascii_tree
-end
 
 options = YamlQuery::Settings.get_options
-tree = parse(options)
-ht = YamlQuery::Transform.new
-query = ht.apply(tree)
-
-if options[:debug]
-  pp query
-end
 
 Dir.glob(options[:yamlpath]).each do |file|
   if File.file?(file)
     if yaml = Psych.load_file(file)
-      hq = YamlQuery.new(yaml, query)
-      results = hq.object_search
+      yq = YamlQuery.new(yaml, options)
+      results = yq.object_search
       if ! results.empty?
         YamlQuery::Output.display_results(file, results, options)
       end
