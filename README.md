@@ -2,7 +2,11 @@
 
 Searches yaml files for keys and values using a simple query language. This was developed with the intention of managing puppet hiera files.
 
-## Examples
+## Installation
+
+    $ gem install yamlquery
+
+## Usage
 
 ```bash
 # yq -y -p ../examples/example.yaml 'foo.funk==head'
@@ -13,18 +17,9 @@ foo:
   - shoulders
 ```
 
-## Installation
-
-    $ gem install yamlquery
-
-## Usage
-
-TODO: Write usage instructions here
-
-
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/nburgess/yamlquery.
+Bug reports and pull requests are welcome on GitHub at https://github.com/nburg/yamlquery.
 
 
 ## License
